@@ -1,0 +1,10 @@
+Dataset. The Bank Marketing dataset from UCI has 45,211 records across 16 features covering client demographics (age, job, education, marital status), financial profile (balance, loan, housing), and campaign behavior (call duration, contact type, number of contacts). The target is whether the client subscribed to a term deposit — only 11.7% did, so the classes are imbalanced.
+Pipeline. Categorical columns were label-encoded. Data was split 80/20 with stratification to preserve class balance. A 5-fold stratified GridSearchCV tuned over max_depth, min_samples_split, min_samples_leaf, and criterion. The best configuration was Gini impurity, depth 5, min_samples_leaf=5.
+Results.
+
+95.6% accuracy, 98.0% AUC — the model generalizes very well
+76.2% recall on the "Yes" class means it catches ~3 out of 4 likely subscribers
+84.4% precision means 84% of flagged clients actually convert
+Cross-validation F1 is stable at 79.9% ± 0.8%, confirming the model doesn't overfit
+
+Key insight from the tree. Call duration dominates at 95.2% feature importance. Calls under 575 seconds almost always result in no subscription. Beyond that threshold, the contact type (cellular vs telephone) becomes the key differentiator. This suggests banks should focus calling efforts on prospects willing to engage in longer conversations, and prefer mobile outreach
